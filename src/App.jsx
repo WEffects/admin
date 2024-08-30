@@ -45,7 +45,7 @@ const App = () => {
       if (!response.ok) {
         throw new Error("Failed to confirm");
       }
-      // alert("Confirmation successful!");
+      alert("Confirmation successful!");
       
       updateConfirmationStatus(index)
     } catch (error) {
