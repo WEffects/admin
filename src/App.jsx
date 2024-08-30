@@ -1,69 +1,123 @@
-import React, {useState, useEffect} from "react";
-import "./index.css"
+import React, { useState, useEffect } from "react";
+import "./index.css";
 
 const App = () => {
-  const [data, setData] = useState([{
-    name: "rakshank",
-    email: "rakshankverma@gmail.com",
-    phone: "8955982674",
-    ticketType: "Stag",
-    totalTickets: 1,
-    totalPrice: 1499,
-    attendence: "confirm",
-    confirm: true,
-    registerAt: {
-      $date: "2024-08-25T05:00:52.300Z"
-    },
-  }]);
-  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [modalImage, setModalImage] = useState(null);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // const response = await fetch("http://localhost:5000/get-registered"); // Replace with your API endpoint
+        const response = await fetch("https://event-r4pe.onrender.com/get-registered"); // Replace with your API endpoint
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
     
+    fetchData();
   }, []);
+  console.log("data", data);
+  
+  const handleShowScreenshot = (imageUrl) => {
+    setModalImage(imageUrl);
+  };
+
+  const handleConfirm = async (id) => {
+    try {
+      const response = await fetch(`https://api.example.com/confirm/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to confirm");
+      }
+      alert("Confirmation successful!");
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+    }
+  };
 
   if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Admin Panel</h1>
-      <div className="flex flex-wrap gap-4">
-        {data.map(item => (
-          <div className="bg-white shadow-md rounded-lg p-4 w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
-            <h2 className="text-xl font-semibold mb-2">User Details</h2>
-            <div className="space-y-2">
-              <div>
-                <span className="font-semibold">Name:</span> {item.name}
-              </div>
-              <div>
-                <span className="font-semibold">Email:</span> {item.email}
-              </div>
-              <div>
-                <span className="font-semibold">Phone:</span> {item.phone}
-              </div>
-              <div>
-                <span className="font-semibold">Ticket Type:</span> {item.ticketType}
-              </div>
-              <div>
-                <span className="font-semibold">Total Tickets:</span> {item.totalTickets}
-              </div>
-              <div>
-                <span className="font-semibold">Attendence</span> {item.totalTickets}
-              </div>
-              <div>
-                <span className="font-semibold">Confirm</span> {item.totalTickets}
-              </div>
-              <div>
-                <span className="font-semibold">Total Price:</span> ${item.totalPrice}
-              </div>
-              <div>
-                <span className="font-semibold">Registered At:</span> {new Date(item.registerAt.$date).toLocaleDateString()}
-              </div>
-            </div>
+      <h1 className="text-2xl font-bold mb-4 text-center bg-black text-white p-2">Admin Panel</h1>
+      <table className="min-w-full bg-white">
+        <thead>
+          <tr>
+            <th className="py-2">Name</th>
+            <th className="py-2">Email</th>
+            <th className="py-2">Phone</th>
+            <th className="py-2">Ticket Type</th>
+            <th className="py-2">Total Tickets</th>
+            <th className="py-2">Attendance</th>
+            <th className="py-2">Total Price</th>
+            <th className="py-2">Registered At</th>
+            <th className="py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.registered.map((item) => (
+            <tr key={item.id} className="border-t text-center">
+              <td className="py-2">{item.name[0]}</td>
+              <td className="py-2">{item.email}</td>
+              <td className="py-2">{item.phone}</td>
+              <td className="py-2">{item.ticketType}</td>
+              <td className="py-2">{item.totalTickets}</td>
+              <td className="py-2">{item.attendence}</td>
+              <td className="py-2">₹ {item.totalPrice}</td>
+              <td className="py-2">
+               
+                {new Date(item.registerAt).toLocaleDateString()}
+              </td>
+              <td className="py-2">
+                <button
+                  className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
+                  onClick={() => handleShowScreenshot(item.screenshotUrl)} // Add screenshotUrl to your data
+                >
+                  Show Screenshot
+                </button>
+                <button
+                  className="bg-green-500 text-white px-2 py-1 rounded"
+                  onClick={() => handleConfirm(item.id)}
+                >
+                  Confirm
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {modalImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-4 rounded shadow-lg">
+            <img src={modalImage} alt="Screenshot" />
+            <button
+              className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
+              onClick={() => setModalImage(null)}
+            >
+              Close
+            </button>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
+};
 
-}
-  export default App
+export default App;
