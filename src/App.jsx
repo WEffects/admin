@@ -31,8 +31,8 @@ const App = () => {
   }, []);
   console.log("data", data);
   
-  const handleShowScreenshot = (ticketCode) => {
-    setModalImage(ticketCode);
+  const handleShowScreenshot = (ticketImageUrl) => {
+    setModalImage(ticketImageUrl);
   };
 
   const handleConfirm = async (ticketCode,index) => {
@@ -104,7 +104,7 @@ const App = () => {
               <td className="py-2 ">
                 <button
                   className="bg-blue-500 text-white px-2 py-1 rounded m-1 mr-2 "
-                  onClick={() => handleShowScreenshot(item.ticketCode)} // Add screenshotUrl to your data
+                  onClick={() => handleShowScreenshot(item.ticketImageUrl)} // Add screenshotUrl to your data
                 >
                   Show Screenshot
                 </button>
@@ -127,7 +127,7 @@ const App = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white  p-4 rounded shadow-lg">
            
-            <img className="" src={`${baseUrl}uploads/${modalImage}.jpg`} alt="Screenshot" />
+            <img className="" src={modalImage} alt="Screenshot" />
             <div className="mt-1 flex justify-center">
             <button
               className=" bg-red-500 text-white px-6 py-2 rounded-full"
