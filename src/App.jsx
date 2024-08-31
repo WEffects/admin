@@ -8,7 +8,8 @@ const App = () => {
   const [modalImage, setModalImage] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   // const baseUrl="http://localhost:5000/"
-  const baseUrl="https://event-r4pe.onrender.com/"
+  // const baseUrl="https://event-r4pe.onrender.com/"
+  const baseUrl="https://event-production.up.railway.app/"
 
   useEffect(() => {
     const fetchData = async () => {
