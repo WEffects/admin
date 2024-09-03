@@ -182,7 +182,7 @@ const App = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white  p-4 rounded shadow-lg">
            
-            <img className="" src={modalImage} alt="Screenshot" />
+            <img className="max-h-[80vh]" src={modalImage} alt="Screenshot" />
             <div className="mt-1 flex justify-center">
             <button
               className=" bg-red-500 text-white px-6 py-2 rounded-full"
