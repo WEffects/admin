@@ -127,6 +127,7 @@ const App = () => {
             <th className="py-2">Email</th>
             <th className="py-2">Phone</th>
             <th className="py-2">Ticket Code</th>
+            <th className="py-2">Refferal Code</th>
             <th className="py-2">Ticket Type</th>
             <th className="py-2">Total Tickets</th>
             <th className="py-2">Total Price</th>
@@ -142,6 +143,7 @@ const App = () => {
               <td className="py-2 border">{item.email}</td>
               <td className="py-2 border">{item.phone}</td>
               <td className="py-2 border">{item.serialNumber?item.serialNumber:"--"}</td>
+              <td className="py-2 border">{item.referralCode==""?"--":item.referralCode}</td>
               <td className="py-2 border">{item.ticketType}</td>
               <td className="py-2 border">{item.totalTickets}</td>
               <td className="py-2 border">₹ {item.totalPrice}</td>
